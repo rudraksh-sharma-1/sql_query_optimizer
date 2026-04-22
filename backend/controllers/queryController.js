@@ -12,7 +12,7 @@ export const analyzeQuery = async (req, res) =>{
     }
 
     //core logic will go here in next step
-    const {root,nodes} = parseExplainPlain(queryPlan);
+    const {root,nodes, totalExecutionTime } = parseExplainPlain(queryPlan);
     const suggestions = analyzeNodes(nodes);
 
     const {error} = await client
@@ -24,7 +24,7 @@ export const analyzeQuery = async (req, res) =>{
         return res.status(500).json({error: "Failed to save History"});
     }
 
-    res.json({tree: root,suggestions});   
+    res.json({tree: root,suggestions, totalExecutionTime});   
 }
 
 export const getHistory = async (req, res) => {
