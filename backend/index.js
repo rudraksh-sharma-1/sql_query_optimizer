@@ -1,25 +1,29 @@
-import express from 'express';
-import cors from 'cors';
-import chalk from 'chalk';
-import dotenv from 'dotenv';
-
-import queryRoutes from './routes/queryRoutes.js';
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import queryRoutes from './routes/queryRoutes.js'
 import feedbackRoutes from './routes/feedbackRoutes.js'
-import sharedReportRoutes from './routes/sharedReportRoutes.js';
+import sharedReportRoutes from './routes/sharedReportRoutes.js'
 
-const app = express();
+dotenv.config()
 
-app.use(cors());
-app.use(express.json());
+const app = express()
 
-app.use('/api/queryRoute', queryRoutes);
-app.use('/api/feedbackRoute', feedbackRoutes);
-app.use('/api/sharedReportRoute', sharedReportRoutes);
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}))
+app.use(express.json())
 
-app.listen(process.env.PORT, () => {
-    try{
-        console.log(chalk.green(`Server is running on port ${process.env.PORT}`));
-    }catch(error){
-        console.error(chalk.red('Failed to start server:', error.message));
-    }
-});
+app.use('/api', queryRoutes)
+app.use('/api/feedback', feedbackRoutes)
+app.use('/api/shared-reports', sharedReportRoutes)
+
+// for local development
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(process.env.PORT, () => {
+        console.log(`Server running on port ${process.env.PORT}`)
+    })
+}
+
+export default app
