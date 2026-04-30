@@ -37,7 +37,7 @@ const Home = () => {
                 {result && (
                     <div className="flex flex-col gap-6">
                         <PlanTree tree={result.tree} totalExecutionTime={result.totalExecutionTime} />
-                        <SuggestionPanel suggestions={result.suggestions} />
+                        <SuggestionPanel suggestions={result.suggestions} historyId={result.history_id} />
                     </div>
                 )}
 

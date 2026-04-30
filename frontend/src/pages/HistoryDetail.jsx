@@ -140,7 +140,7 @@ const HistoryDetail = () => {
 
                 {/* suggestions */}
                 {entry.suggestions && (
-                    <SuggestionPanel suggestions={entry.suggestions} />
+                    <SuggestionPanel suggestions={entry.suggestions} historyId={entry.id} />
                 )}
 
             </div>

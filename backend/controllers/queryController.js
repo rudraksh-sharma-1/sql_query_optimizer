@@ -15,16 +15,18 @@ export const analyzeQuery = async (req, res) =>{
     const {root,nodes, totalExecutionTime } = parseExplainPlain(queryPlan);
     const suggestions = analyzeNodes(nodes);
 
-    const {error} = await client
+    const { data: historyEntry, error } = await client
     .from('history')
-    .insert({user_id: userId, query_plan: queryPlan, suggestions: suggestions, tree: root});
+    .insert({ user_id: userId, query_plan: queryPlan, suggestions, tree: root })
+    .select('id')
+    .single()
 
     if(error){
         /* console.error("Error saving history:", error); */
         return res.status(500).json({error: "Failed to save History"});
     }
 
-    res.json({tree: root,suggestions, totalExecutionTime});   
+    res.json({tree: root,suggestions, totalExecutionTime, history_id: historyEntry.id});   
 }
 
 export const getHistory = async (req, res) => {

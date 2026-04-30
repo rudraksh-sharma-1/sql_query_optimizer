@@ -21,7 +21,7 @@ export const submitFeedback = async (req, res) => {
         .select('id')
         .eq('id', history_id)
         .eq('user_id', userId)
-        .Single()
+        .single()
 
     /* console.log('History Entry:', historyEntry)
     console.log('History Error:', historyError) */

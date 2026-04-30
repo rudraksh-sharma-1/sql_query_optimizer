@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import FeedbackBar from './FeedbackBar.jsx'
 
 const SuggestionCard = ({ item, type }) => {
     const styles = {
@@ -44,7 +45,7 @@ const SuggestionCard = ({ item, type }) => {
     )
 }
 
-const SuggestionPanel = ({ suggestions }) => {
+const SuggestionPanel = ({ suggestions, historyId }) => {
     const [collapsed, setCollapsed] = useState(false)
 
     if (!suggestions) return null
@@ -52,11 +53,14 @@ const SuggestionPanel = ({ suggestions }) => {
     // handle success case
     if (suggestions.success) {
         return (
-            <div className="flex items-center gap-3 px-4 py-3 bg-green-500/10 border border-green-500/20 rounded-2xl">
-                <svg className="w-5 h-5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <p className="text-sm text-green-400 font-medium">{suggestions.message}</p>
+            <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-3 px-4 py-3 bg-green-500/10 border border-green-500/20 rounded-2xl">
+                    <svg className="w-5 h-5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <p className="text-sm text-green-400 font-medium">{suggestions.message}</p>
+                </div>
+                {historyId && <FeedbackBar historyId={historyId} />}
             </div>
         )
     }
@@ -115,6 +119,9 @@ const SuggestionPanel = ({ suggestions }) => {
                             ))}
                         </div>
                     )}
+
+                    {/* Feedback */}
+                    {historyId && <FeedbackBar historyId={historyId} />}
 
                 </div>
             )}
