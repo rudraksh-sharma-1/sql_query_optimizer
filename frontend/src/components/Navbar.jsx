@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import logo from '../../public/logo.png'
+import logo from '/logo.png'
 
 const LogoutModal = ({ onConfirm, onCancel }) => {
     return (

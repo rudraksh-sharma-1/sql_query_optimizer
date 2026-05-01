@@ -4,7 +4,7 @@ import crypto from 'crypto'
 
 // generate a random slug
 const generateSlug = () => {
-    return crypto.randomBytes(6).toString('hex')  // e.g. "a1b2c3d4e5f6"
+    return crypto.randomBytes(6).toString('hex')  
 }
 
 // create shared report

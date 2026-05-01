@@ -22,13 +22,12 @@ const GoogleButton = ({ label = 'Continue with Google' }) => {
             <button
                 onClick={handleGoogleLogin}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 disabled:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700 rounded-xl text-sm font-medium text-white transition-colors duration-200"
+                className="w-full flex items-center justify-center gap-3 px-4 py-2.5 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors duration-200 shadow-sm"
             >
-                {/* google icon */}
                 {loading ? (
                     <svg className="w-4 h-4 animate-spin text-gray-400" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                     </svg>
                 ) : (
                     <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -42,9 +41,7 @@ const GoogleButton = ({ label = 'Continue with Google' }) => {
             </button>
 
             {error && (
-                <p className="mt-2 text-xs text-red-400 text-center">
-                    {error}
-                </p>
+                <p className="mt-2 text-xs text-red-500 text-center">{error}</p>
             )}
         </div>
     )
