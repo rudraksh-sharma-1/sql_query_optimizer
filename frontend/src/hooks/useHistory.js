@@ -1,23 +1,39 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { fetchHistory} from '../api/historyApi'
+import { fetchHistory } from '../api/historyApi'
+
+// module-level cache — survives tab switches, cleared on logout
+const cache = {
+    history: null,
+    pagination: null,
+    page: 1,
+}
 
 const useHistory = () => {
     const { session } = useAuth()
-    const [history, setHistory] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [history, setHistory] = useState(cache.history || [])
+    const [loading, setLoading] = useState(cache.history === null) // only show loading if no cache yet
     const [error, setError] = useState(null)
-    const [page, setPage] = useState(1)
-    const [pagination, setPagination] = useState(null)
+    const [page, setPage] = useState(cache.page || 1)
+    const [pagination, setPagination] = useState(cache.pagination || null)
 
     const limit = 10
 
-    const loadHistory = async (pageNum = 1) => {
+    const loadHistory = async (pageNum = 1, force = false) => {
+        // skip fetch if we already have cached data for this page
+        if (!force && cache.history !== null && cache.page === pageNum) return
+
         setLoading(true)
         setError(null)
         try {
             const token = session?.access_token
             const data = await fetchHistory(token, pageNum, limit)
+
+            // update cache
+            cache.history = data.history
+            cache.pagination = data.pagination
+            cache.page = pageNum
+
             setHistory(data.history)
             setPagination(data.pagination)
         } catch (err) {
@@ -27,32 +43,23 @@ const useHistory = () => {
         }
     }
 
-   /*  const deleteEntry = async (id) => {
-        try {
-            const token = session?.access_token
-            await deleteHistoryEntry(token, id)
-            // remove from local state instantly
-            setHistory(prev => prev.filter(h => h.id !== id))
-            setPagination(prev => ({
-                ...prev,
-                total: prev.total - 1,
-                totalPages: Math.ceil((prev.total - 1) / limit)
-            }))
-        } catch (err) {
-            setError(err.response?.data?.error || 'Failed to delete entry')
-        }
-    } */
-
     const goToPage = (pageNum) => {
         setPage(pageNum)
         loadHistory(pageNum)
     }
 
     useEffect(() => {
-        if (session) loadHistory(1)
+        if (!session) {
+            // clear cache on logout
+            cache.history = null
+            cache.pagination = null
+            cache.page = 1
+            return
+        }
+        loadHistory(cache.page)
     }, [session])
 
-    return { history, loading, error, pagination, page, goToPage}
+    return { history, loading, error, pagination, page, goToPage }
 }
 
 export default useHistory

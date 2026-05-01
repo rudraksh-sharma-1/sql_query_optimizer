@@ -1,30 +1,32 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import logo from '../../public/logo.png'
 
 const LogoutModal = ({ onConfirm, onCancel }) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
             <div
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                className="absolute inset-0 bg-black/30 backdrop-blur-sm"
                 onClick={onCancel}
             />
-            <div className="relative w-full max-w-sm bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col gap-4">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 mx-auto">
-                    <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="relative w-full max-w-sm bg-white border border-gray-200 rounded-2xl p-6 flex flex-col gap-4 shadow-xl">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full mx-auto">
+                    {/* <svg className="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
+                    </svg> */}
+                    <img src={logo} alt="Logo" />
                 </div>
                 <div className="text-center">
-                    <h3 className="text-white font-semibold text-lg">Sign out</h3>
-                    <p className="text-gray-400 text-sm mt-1">
+                    <h3 className="text-gray-900 font-semibold text-lg">Sign out</h3>
+                    <p className="text-gray-500 text-sm mt-1">
                         Are you sure you want to sign out of your account?
                     </p>
                 </div>
                 <div className="flex gap-3 mt-2">
                     <button
                         onClick={onCancel}
-                        className="flex-1 py-2.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl text-sm font-medium text-gray-300 transition-colors duration-200 cursor-pointer"
+                        className="flex-1 py-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-colors duration-200 cursor-pointer"
                     >
                         Cancel
                     </button>
@@ -43,7 +45,7 @@ const LogoutModal = ({ onConfirm, onCancel }) => {
 const Navbar = () => {
     const { user, logout } = useAuth()
     const navigate = useNavigate()
-    const location = useLocation()          // ← track current route
+    const location = useLocation()
     const [showModal, setShowModal] = useState(false)
 
     const handleLogoutConfirm = async () => {
@@ -57,34 +59,29 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="w-full bg-gray-900 border-b border-gray-800 px-6 py-4">
+            <nav className="w-full bg-white border-b border-gray-200 px-6 py-3.5">
                 <div className="max-w-6xl mx-auto flex items-center justify-between">
 
                     {/* logo */}
                     <Link to="/" className="flex items-center gap-2.5 group cursor-pointer">
-                        <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h8M8 8h4" />
-                            </svg>
-                        </div>
-                        <span className="text-white font-semibold text-sm group-hover:text-blue-400 transition-colors duration-200">
+                        <img src={logo} alt="Logo" className="w-8 h-8" />
+                        <span className="text-gray-900 font-semibold text-sm group-hover:text-blue-600 transition-colors duration-200">
                             SQL Analyzer
                         </span>
                     </Link>
 
                     {/* right side */}
                     {user ? (
-                        <div className="flex items-center gap-4">
-                            <span className="hidden sm:block text-xs text-gray-500 max-w-[180px] truncate">
+                        <div className="flex items-center gap-3">
+                            <span className="hidden sm:block text-xs text-gray-400 max-w-[180px] truncate">
                                 {user.email}
                             </span>
                             <Link
                                 to="/history"
                                 className={`flex items-center gap-2 px-4 py-2 border rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer
-                ${location.pathname === '/history'
-                                        ? 'bg-blue-600/10 border-blue-500/30 text-blue-400'
-                                        : 'bg-gray-800 hover:bg-gray-700 border-gray-700 text-gray-300'
+                                    ${location.pathname === '/history'
+                                        ? 'bg-indigo-50 border-indigo-200 text-blue-600'
+                                        : 'bg-white hover:bg-gray-50 border-gray-200 text-gray-600 hover:text-gray-900'
                                     }`}
                             >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -94,7 +91,7 @@ const Navbar = () => {
                             </Link>
                             <button
                                 onClick={() => setShowModal(true)}
-                                className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-red-600/10 hover:border-red-500/30 border border-gray-700 rounded-xl text-sm font-medium text-gray-300 hover:text-red-400 transition-all duration-200 cursor-pointer"
+                                className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-red-50 hover:border-red-200 border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:text-red-500 transition-all duration-200 cursor-pointer"
                             >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -103,15 +100,15 @@ const Navbar = () => {
                             </button>
                         </div>
                     ) : (
-                        <div className="flex items-center gap-1 bg-gray-800 border border-gray-700 rounded-xl p-1">
+                        <div className="flex items-center gap-1 bg-gray-100 border border-gray-200 rounded-xl p-1">
 
                             {/* sign in button */}
                             <Link
                                 to="/login"
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer
                                     ${isLogin
-                                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                                        : 'text-gray-400 hover:text-white'
+                                        ? 'bg-white text-gray-900 shadow-sm border border-gray-200'
+                                        : 'text-gray-500 hover:text-gray-800'
                                     }`}
                             >
                                 Sign in
@@ -122,8 +119,8 @@ const Navbar = () => {
                                 to="/signup"
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer
                                     ${isSignup
-                                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                                        : 'text-gray-400 hover:text-white'
+                                        ? 'bg-white text-gray-900 shadow-sm border border-gray-200'
+                                        : 'text-gray-500 hover:text-gray-800'
                                     }`}
                             >
                                 Sign up
